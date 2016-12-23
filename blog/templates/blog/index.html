@@ -1,0 +1,41 @@
+{% extends "blog/__base__.html" %}
+
+{% block title %}首页{% endblock %}
+
+{% block nav-li-index %}
+<li class="nav-item active"><a href="#" class="nav-link">首页</a></li>
+{% endblock %}
+
+{% block page_image %}
+{% load static %}
+<div class="xy-home-img-container">
+	<img src="{% static 'blog/images/tm-home-img.jpg' %}" alt="Image" class="hidden-lg-up img-fluid">
+</div>
+{% endblock %}
+
+{% block main %}
+<section class="xy-section">
+	<div class="container-fluid">
+		<div class="row">
+			{% for blog in blogs %} 
+				{% if forloop.counter <= 4 and blog is not None %}	<!-- 首页最多展示4条博客 -->
+				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 col-xl-3">
+					<div class="xy-content-box">
+						{% if blog.image %}
+						<img src="{{ blog.image.url }}" alt="Image" class="xy-margin-b-20 img-fluid">
+						{% endif %}
+						<h4 class="xy-margin-b-20 xy-gold-text">{{ blog.title }}</h4>
+						<p class="xy-margin-b-20">{{ blog.summary }}</p>
+						<a href="{% url 'blog:detail' blog.id %}" class="xy-btn text-uppercase">详情</a>
+					</div>
+				</div>
+				{% endif %}
+			{% empty %}
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+					<p>这货很懒，还没写文章~</p>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+</section>
+{% endblock %}

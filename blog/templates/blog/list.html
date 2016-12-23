@@ -1,0 +1,59 @@
+{% extends "blog/__base__.html" %}
+
+{% block title %}博客列表{% endblock %}
+
+{% block nav-li-list %}
+<li class="nav-item active"><a href="#" class="nav-link">看看</a></li>
+{% endblock %}
+
+{% block page_image %}
+<div class="xy-blog-img-container"></div>
+{% endblock %}
+
+{% block main %}
+<section class="xy-section">
+	<div class="container-fluid">
+		<div class="row">
+		
+			<div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9">
+				{% for blog in blogs %}
+				<div class="xy-blog-post">
+					<h3><a href="{% url 'blog:detail' blog.id %}" class="xy-gold-text">{{ blog.title }}</a></h3>
+					<p>{{ blog.summary }}</p>
+					{% if blog.image %}
+					<img src="{{ blog.image.url }}" alt="Image" class="img-fluid xy-img-post">
+					{% endif %}
+					<p>{{ blog.content }}</p>
+				</div>
+				{% empty %}
+				<p>还没有文章，<a href="{% url 'blog:write' %}" class="xy-text-link">快来写写吧>>></a></p>
+				{% endfor %}
+			</div>
+			
+			<aside class="col-xs-12 col-sm-12 col-md-4 col-lg-3 col-xl-3 xy-aside-r">
+				<div class="xy-aside-container">
+					
+					<a href="{% url 'blog:write' %}" class="xy-btn text-uppercase" style="font-size: 1.65rem;">写博客</a>
+					<hr class="xy-margin-t-small">
+					
+					<h3 class="xy-gold-text xy-title">可能想看</h3>
+					<nav>
+						<ul class="nav">
+							<li><a href="#" class="xy-text-link">Lorem ipsum dolor sit</a></li>
+							<li><a href="#" class="xy-text-link">Tincidunt non faucibus placerat</a></li>
+							<li><a href="#" class="xy-text-link">Vestibulum tempor ac lectus</a></li>
+							<li><a href="#" class="xy-text-link">Elementum egestas dui</a></li>
+							<li><a href="#" class="xy-text-link">Nam in augue consectetur</a></li>
+							<li><a href="#" class="xy-text-link">Fusce non turpis euismod</a></li>
+							<li><a href="#" class="xy-text-link">Text Link Color #006699</a></li>
+						</ul>
+					</nav>
+					<hr class="xy-margin-t-small">
+					
+				</div>
+			</aside>
+			
+		</div>
+	</div>
+</section>
+{% endblock %}

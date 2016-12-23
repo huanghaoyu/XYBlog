@@ -1,0 +1,67 @@
+{% extends "blog/__base__.html" %}
+
+{% block title %}注册{% endblock %}
+
+{% block nav-li-login-register %}
+<li class="nav-item active"><a href="#" class="nav-link">注册</a></li>
+{% endblock %}
+
+{% block page_image %}
+<div class="xy-contact-img-container"></div>
+{% endblock %}
+
+{% block beforehead %}
+<script>
+function check_form() {
+	if ($('#password1').val() != $('#password2').val()) {
+		$('#passsword-not-same-msg').show();	/* 显示密码不一致的提示信息 */
+		return false;
+	}
+	$('password').val(CryptoJS.MD5($('password1').val()).toString());
+	return true;
+}
+</script>
+
+<style type="text/css">
+/* 两次输入的密码不一致时的提示信息 */
+#passsword-not-same-msg {
+    color: red;
+    font-size: .8rem;
+    margin-top: -.5rem;
+    margin-bottom: 1rem;
+    display: none;
+}
+</style>
+{% endblock %}
+
+{% block main %}
+<section class="xy-section">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+				<section>
+					<h3 class="xy-gold-text xy-form-title">欢迎注册！</h3>
+					{% csrf_token %}
+					<form action="index.html" method="post" class="xy-contact-form" onsubmit="return check_form()">
+						<div class="form-group">
+							<input type="text" id="name" name="name" class="form-control" placeholder="用户名，不超过20个汉字" required />
+						</div>
+						<div class="form-group">
+							<input type="email" id="email" name="email" class="form-control" placeholder="电子邮箱" required />
+						</div>
+						<div class="form-group">
+							<input type="password" id="password1" class="form-control" placeholder="密码，不超过20个字符" required />
+							<input type="hidden" id="password" name="password" class="form-control" />
+						</div>
+						<div class="form-group">
+							<input type="password" id="password2" class="form-control" placeholder="重复密码" required />
+						</div>
+						<h5 id="passsword-not-same-msg">两次输入的密码不一致！</h5>
+						<button type="submit" class="xy-btn">注册</button>
+					</form>
+				</section>
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock %}

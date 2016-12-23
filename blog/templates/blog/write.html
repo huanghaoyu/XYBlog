@@ -1,0 +1,91 @@
+{% extends "blog/__base__.html" %}
+
+{% block title %}写博客{% endblock %}
+
+{% block beforehead %}
+<script>
+$(document).on('ready', function() {
+	var uploadImage = $('form input#image');
+	uploadImage.on('change', function() {
+		var file = $(this).prop('files')[0];
+		var splitFileName = file.name.split('.');
+		var extension = splitFileName[splitFileName.length-1];
+		if (extension.toLocaleLowerCase() != 'jpg' 
+				&& extension.toLocaleLowerCase() != 'jpeg' 
+				&& extension.toLocaleLowerCase() != 'png' 
+				&& extension.toLocaleLowerCase() != 'bmp' 
+				&& extension.toLocaleLowerCase() != 'gif') {
+			$('#image-invalid').show();
+			$('form img#preview-image').hide();
+			return;
+		} else {
+			$('#image-invalid').hide();
+		} // if
+		var reader = new FileReader();
+		reader.onload = function (e) {
+			$('form img#preview-image').attr('src', e.target.result);
+		}
+		reader.readAsDataURL(file);
+		$('form img#preview-image').show();
+	});
+});
+</script>
+
+<style>
+#image-invalid {
+	color: red;
+    font-size: .8rem;
+    margin-top: -.5rem;
+    margin-bottom: 1rem;
+    display: none;
+}
+form img#preview-image {
+	display: none;
+	height: 180px;
+	width: auto;
+}
+</style>
+{% endblock %}
+
+{% block nav-li-write %}
+<li class="nav-item active"><a href="#" class="nav-link">写写</a></li>
+{% endblock %}
+
+{% block page_image %}
+<div class="xy-about-img-container"></div>
+{% endblock %}
+
+{% block main %}
+<section class="xy-section">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+				<section>
+					{% csrf_token %}
+					<form action="#" method="post" class="xy-contact-form">
+						<div class="form-group">
+							<label for="title">标题</label>
+							<input type="text" class="form-control" id="title" name="title" required />
+						</div>
+						<div class="form-group">
+							<label for="summary">概要</label>
+							<input type="text" class="form-control" id="summary" name="summary" />
+						</div>
+						<div class="form-group">
+							<label for="image">图片</label><br>
+    						<input type="file" id="image" name="image" />
+						</div>
+						<h5 id="image-invalid">请上传图像文件</h5>
+						<img src="" alt="Image" class="img-fluid xy-img-post" id="preview-image" />
+						<div class="form-group">
+							<label for="content">内容</label>
+							<textarea class="form-control" rows="20" id="content" name="content" required ></textarea>
+						</div>
+						<button type="submit" class="xy-btn">提交</button>
+					</form>
+				</section>
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock %}
