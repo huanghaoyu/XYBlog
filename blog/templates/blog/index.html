@@ -13,26 +13,33 @@
 </div>
 {% endblock %}
 
+{% block beforehead %}
+{% endblock %}
+
 {% block main %}
 <section class="xy-section">
 	<div class="container-fluid">
 		<div class="row">
 			{% for blog in blogs %} 
-				{% if forloop.counter <= 4 and blog is not None %}	<!-- 首页最多展示4条博客 -->
+				{% if forloop.counter <= 4 and blog is not None %}
 				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 col-xl-3">
 					<div class="xy-content-box">
 						{% if blog.image %}
-						<img src="{{ blog.image.url }}" alt="Image" class="xy-margin-b-20 img-fluid">
+						<img src="{{ blog.image.url }}" alt="Image" class="blog-image xy-margin-b-20 img-fluid">
 						{% endif %}
-						<h4 class="xy-margin-b-20 xy-gold-text">{{ blog.title }}</h4>
-						<p class="xy-margin-b-20">{{ blog.summary }}</p>
+						<div>
+							<h4 class="xy-margin-b-20 xy-gold-text">{{ blog.title }}</h4>
+						</div>
+						<div>
+							<p class="xy-margin-b-20">{{ blog.summary }}</p>
+						</div>
 						<a href="{% url 'blog:detail' blog.id %}" class="xy-btn text-uppercase">详情</a>
 					</div>
 				</div>
 				{% endif %}
 			{% empty %}
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-					<p>这货很懒，还没写文章~</p>
+					<p>还没有人写过博客~</p>
 				</div>
 			{% endfor %}
 		</div>

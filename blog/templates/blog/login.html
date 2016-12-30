@@ -13,24 +13,47 @@
 {% block beforehead %}
 <script>
 function check_form() {
-	$('password').val(CryptoJS.MD5($('password1').val()).toString());
+	re = new RegExp("^[\\w!#$%&'*+/=?^_`{|}~-]+(?:\\.[\\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\\w](?:[\\w-]*[\\w])?\\.)+[\\w](?:[\\w-]*[\\w])?$");
+	if (!re.test($('#email').val())) {
+		var email_error = $('form #email-error');
+		email_error.text('邮箱格式不正确！');
+		email_error.show();
+		return false;
+	} // if
+	$('#password').val(CryptoJS.MD5($('#password1').val()).toString());
 	return true;
 }
 </script>
+
+<style type="text/css">
+.error-msg {
+    color: red;
+    font-size: .8rem;
+    margin-top: -.5rem;
+    margin-bottom: 1rem;
+    display: none;
+}
+</style>
 {% endblock %}
 
 {% block main %}
 <section class="xy-section">
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-lg-offset-3 col-xl-offset-3">
 				<section>
 					<h3 class="xy-gold-text xy-form-title">欢迎回来！</h3>
-					{% csrf_token %}
-					<form action="index.html" method="post" class="xy-contact-form" onsubmit="return check_form()">
+					{% if messages %}
+					{% for message in messages %}
+					<h5 style="color:red; font-size:.8rem; margin-top:1.2rem;">{{ message }}</h5>
+					{% endfor %}
+					{% endif %}
+					<form action="{% url 'blog:list' %}" method="post" class="xy-contact-form" onsubmit="return check_form()">
+						{% csrf_token %}
 						<div class="form-group">
-							<input type="email" id="email" name="email" class="form-control" placeholder="电子邮箱" required />
+							<input type="text" id="email" name="email" class="form-control" placeholder="电子邮箱" required />
 						</div>
+						<h5 class="error-msg" id="email-error"></h5>
 						<div class="form-group">
 							<input type="password" id="password1" class="form-control" placeholder="密码" required />
 							<input type="hidden" id="password" name="password" class="form-control" />

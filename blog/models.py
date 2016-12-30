@@ -5,8 +5,8 @@ from django.db import models
 class User(models.Model):
     name = models.CharField(max_length=20)
     email = models.EmailField()
-    password = models.CharField(max_length=20)
-    image = models.ImageField(upload_to='blog/images/user_images', blank=True)
+    password = models.CharField(max_length=128)
+#     image = models.ImageField(upload_to='blog/images/user_images', blank=True)
     create_time = models.DateTimeField(auto_now_add=True)
     
     def __unicode__(self):

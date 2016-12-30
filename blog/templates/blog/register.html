@@ -13,18 +13,55 @@
 {% block beforehead %}
 <script>
 function check_form() {
-	if ($('#password1').val() != $('#password2').val()) {
-		$('#passsword-not-same-msg').show();	/* 显示密码不一致的提示信息 */
+	$('form #name-error').text('');
+	$('form #email-error').text('');
+	$('form #password-error').text('');
+	// 检车用户名
+	var re = new RegExp("^[\\u4e00-\\u9fa5a-zA-Z0-9_-]+$");
+	if ($('#name').val().length > 20) {
+		var name_error = $('form #name-error');
+		name_error.text('用户名不能超过20个字符！');
+		name_error.show();
 		return false;
-	}
-	$('password').val(CryptoJS.MD5($('password1').val()).toString());
+	} else if (!re.test(name_error)) {
+		var name_error = $('form #name-error');
+		name_error.text('用户名只能包含汉字、字母、下划线和连接符！');
+		name_error.show();
+		return false;
+	} // if
+	// 检查电子邮箱
+	re = new RegExp("^[\\w!#$%&'*+/=?^_`{|}~-]+(?:\\.[\\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\\w](?:[\\w-]*[\\w])?\\.)+[\\w](?:[\\w-]*[\\w])?$");
+	if (!re.test($('#email').val())) {
+		var email_error = $('form #email-error');
+		email_error.text('邮箱格式不正确！');
+		email_error.show();
+		return false;
+	} // if
+	// 检查密码
+	re = new RegExp("^[^\\u4e00-\\u9fa5 ]+$");
+	if ($('#password1').val().length > 20) {
+		var password_error = $('form #password-error');
+		password_error.text('密码长度不能超过20个字符！');
+		password_error.show();
+		return false;
+	} else if (!re.test($('#password1').val())) {
+		var password_error = $('form #password-error');
+		password_error.text('密码不能包含汉字和空格！');
+		password_error.show();
+		return false;
+	} else if ($('#password1').val() != $('#password2').val()) {
+		var password_error = $('form #password-error');
+		password_error.text('两次输入的密码不一致！');
+		password_error.show();
+		return false;
+	} // if
+	$('#password').val(CryptoJS.MD5($('#password1').val()).toString());
 	return true;
 }
 </script>
 
 <style type="text/css">
-/* 两次输入的密码不一致时的提示信息 */
-#passsword-not-same-msg {
+.error-msg {
     color: red;
     font-size: .8rem;
     margin-top: -.5rem;
@@ -38,17 +75,24 @@ function check_form() {
 <section class="xy-section">
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-lg-offset-3 col-xl-offset-3">
 				<section>
 					<h3 class="xy-gold-text xy-form-title">欢迎注册！</h3>
-					{% csrf_token %}
-					<form action="index.html" method="post" class="xy-contact-form" onsubmit="return check_form()">
+					{% if messages %}
+					{% for message in messages %}
+					<h5 style="color:red; font-size:.8rem; margin-top:1.2rem;">{{ message }}</h5>
+					{% endfor %}
+					{% endif %}
+					<form action="{% url 'blog:list' %}" method="post" class="xy-contact-form" onsubmit="return check_form()">
+						{% csrf_token %}
 						<div class="form-group">
-							<input type="text" id="name" name="name" class="form-control" placeholder="用户名，不超过20个汉字" required />
+							<input type="text" id="name" name="name" class="form-control" placeholder="用户名，不超过20个字符" required />
 						</div>
+						<h5 class="error-msg" id="name-error"></h5>
 						<div class="form-group">
-							<input type="email" id="email" name="email" class="form-control" placeholder="电子邮箱" required />
+							<input type="text" id="email" name="email" class="form-control" placeholder="电子邮箱" required />
 						</div>
+						<h5 class="error-msg" id="email-error"></h5>
 						<div class="form-group">
 							<input type="password" id="password1" class="form-control" placeholder="密码，不超过20个字符" required />
 							<input type="hidden" id="password" name="password" class="form-control" />
@@ -56,8 +100,8 @@ function check_form() {
 						<div class="form-group">
 							<input type="password" id="password2" class="form-control" placeholder="重复密码" required />
 						</div>
-						<h5 id="passsword-not-same-msg">两次输入的密码不一致！</h5>
-						<button type="submit" class="xy-btn">注册</button>
+						<h5 class="error-msg" id="password-error"></h5>
+						<button type="submit" class="xy-btn">注册</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'blog:login' %}" class="xy-text-link">已有账户？点此登录>>></a>
 					</form>
 				</section>
 			</div>

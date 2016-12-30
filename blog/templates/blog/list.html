@@ -26,7 +26,7 @@
 					<p>{{ blog.content }}</p>
 				</div>
 				{% empty %}
-				<p>还没有文章，<a href="{% url 'blog:write' %}" class="xy-text-link">快来写写吧>>></a></p>
+				<p>还没有写过博客，<a href="{% url 'blog:write' %}" class="xy-text-link">快来写写吧>>></a></p>
 				{% endfor %}
 			</div>
 			
