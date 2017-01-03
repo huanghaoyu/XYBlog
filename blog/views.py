@@ -18,11 +18,11 @@ def index(request):
         id, expire_time, md5 = cookies.parse_login_cookie(login_cookie)
         user = get_object_or_404(User, pk=id)
         if cookies.vefiry_login_cookie(id, user.password, expire_time, md5):
-            blogs = Blog.objects.filter(user_id=id).order_by('create_time')
+            blogs = Blog.objects.filter(user_id=id).order_by('-create_time')
         else:
-            blogs = Blog.objects.all().order_by('create_time')
+            blogs = Blog.objects.all().order_by('-create_time')
     else:
-        blogs = Blog.objects.all().order_by('create_time')
+        blogs = Blog.objects.all().order_by('-create_time')
     context = {
         'blogs': blogs,
     }
@@ -40,9 +40,9 @@ def list(request):
             if cookies.vefiry_login_cookie(id, user.password, expire_time, md5):
                 blogs = Blog.objects.filter(user_id=id).order_by('create_time')
             else:
-                blogs = Blog.objects.all().order_by('create_time')
+                blogs = Blog.objects.all().order_by('-create_time')
         else:
-            blogs = Blog.objects.all().order_by('create_time')
+            blogs = Blog.objects.all().order_by('-create_time')
     elif request.method == 'POST':
         name = request.POST.get('name', '')
         email = request.POST.get('email', '')
@@ -67,7 +67,7 @@ def list(request):
                 user = User(name=name, email=email, password=password)
                 user.save()
         login_cookie = cookies.generate_login_cookie(user.id, user.password, _LOGIN_COOKIE_AGE_)
-        blogs = Blog.objects.filter(user_id=user.id).order_by('create_time')
+        blogs = Blog.objects.filter(user_id=user.id).order_by('-create_time')
     context = {
         'blogs': blogs,
     }

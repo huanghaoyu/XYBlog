@@ -14,6 +14,35 @@
 {% endblock %}
 
 {% block beforehead %}
+<style>
+.img-box {
+	float: left;
+	position: relative;
+	left: 50%;
+}
+.blog-image {
+	height: 180px;
+	max-width: initial;
+    position: relative;
+    right: 50%;
+}
+.blog-title {
+	width: inherit;
+	height: 35px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+.blog-summary {
+	width: inherit;
+    height: 68px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+</style>
 {% endblock %}
 
 {% block main %}
@@ -25,14 +54,13 @@
 				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 col-xl-3">
 					<div class="xy-content-box">
 						{% if blog.image %}
-						<img src="{{ blog.image.url }}" alt="Image" class="blog-image xy-margin-b-20 img-fluid">
+						<div class="img-box">
+							<img src="{{ blog.image.url }}" alt="Image" class="xy-margin-b-20 img-fluid blog-image">
+						</div>
 						{% endif %}
-						<div>
-							<h4 class="xy-margin-b-20 xy-gold-text">{{ blog.title }}</h4>
-						</div>
-						<div>
-							<p class="xy-margin-b-20">{{ blog.summary }}</p>
-						</div>
+						<div style="width: inherit; height: 180px; margin-bottom: 20px;"><!-- 占位的div元素 --></div>
+						<h4 class="xy-margin-b-20 xy-gold-text blog-title">{{ blog.title }}</h4>
+						<p class="xy-margin-b-20 blog-summary">{{ blog.summary }}</p>
 						<a href="{% url 'blog:detail' blog.id %}" class="xy-btn text-uppercase">详情</a>
 					</div>
 				</div>
