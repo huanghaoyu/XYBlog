@@ -70,9 +70,25 @@ def list(request):
 
 def detail(request, blog_id):
     user = None
+    blog = None
     if hasattr(request, 'blog_user') and request.blog_user is not None:
         user = request.blog_user
-    blog = get_object_or_404(Blog, pk=blog_id)
+    if int(blog_id) == 0:
+        if request.method == 'POST':
+            # 新建博客
+            title = request.POST.get('title', 'No title')
+            summary = request.POST.get('summary', 'No summary')
+            content = request.POST.get('content', 'No content')
+            if 'image' in request.FILES:
+                blog = Blog(title=title, summary=summary, content=content, user=user, image=request.FILES['image'])
+            else:
+                blog = Blog(title=title, summary=summary, content=content, user=user)
+            blog.save()
+    else:
+        # 显示已有博客
+        blog = get_object_or_404(Blog, pk=blog_id)
+        print type(blog.image)
+        print blog.image
     context = {
         'user': user,
         'blog': blog,

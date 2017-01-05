@@ -8,7 +8,7 @@ urlpatterns = [
     # ex: /blog/list/
     url(r'^list/$', views.list, name='list'),
     # ex: /blog/5/
-    url(r'^(?P<blog_id>[0-9]+)/$', views.detail, name='detail'),
+    url(r'^detail/(?P<blog_id>[0-9]+)/$', views.detail, name='detail'),
     # ex: /blog/register/
     url(r'^register/$', views.register, name='register'),
     # ex: /blog/login/

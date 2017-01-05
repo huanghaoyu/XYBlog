@@ -70,8 +70,8 @@ form img#preview-image {
 		<div class="row">
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
 				<section>
-					{% csrf_token %}
-					<form action="#" method="post" class="xy-contact-form">
+					<form action="{% url 'blog:detail' 0 %}" method="post" enctype="multipart/form-data" class="xy-contact-form">
+						{% csrf_token %}
 						<div class="form-group">
 							<label for="title">标题</label>
 							<input type="text" class="form-control" id="title" name="title" required />
