@@ -28,7 +28,8 @@ def list(request):
     blogs = None
     login_cookie = None
     if request.method == 'GET':
-        login_cookie = request.COOKIES[LOGIN_COOKIE]
+        if LOGIN_COOKIE in request.COOKIES:
+            login_cookie = request.COOKIES[LOGIN_COOKIE]
         if hasattr(request, 'blog_user') and request.blog_user is not None:
             user = request.blog_user
             blogs = Blog.objects.filter(user_id=user.id).order_by('-create_time')
