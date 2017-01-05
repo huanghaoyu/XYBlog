@@ -2,6 +2,14 @@
 
 {% block title %}写博客{% endblock %}
 
+{% block nav-li-login %}
+{% if user %}
+	<li class="nav-item"><a href="#" class="nav-link">{{ user.name }}</a></li>
+{% else %}
+	<li class="nav-item"><a href="{% url 'blog:login' %}" class="nav-link">登录</a></li>
+{% endif %}
+{% endblock %}
+
 {% block beforehead %}
 <script>
 $(document).on('ready', function() {
@@ -56,6 +64,7 @@ form img#preview-image {
 {% endblock %}
 
 {% block main %}
+{% if user %}
 <section class="xy-section">
 	<div class="container-fluid">
 		<div class="row">
@@ -69,7 +78,7 @@ form img#preview-image {
 						</div>
 						<div class="form-group">
 							<label for="summary">概要</label>
-							<input type="text" class="form-control" id="summary" name="summary" />
+							<input type="text" class="form-control" id="summary" name="summary" required />
 						</div>
 						<div class="form-group">
 							<label for="image">图片</label><br>
@@ -88,4 +97,7 @@ form img#preview-image {
 		</div>
 	</div>
 </section>
+{% else %}
+<p>您还没登录，<a href="{% url 'blog:login' %}" class="xy-text-link">请先登录>>></a></p>
+{% endif %}
 {% endblock %}

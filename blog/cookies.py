@@ -1,4 +1,9 @@
+# -*- coding: utf-8 -*-
+
 import hashlib, time
+
+LOGIN_COOKIE = 'login'
+LOGIN_COOKIE_AGE = 604800  # 登录cookie七天失效
 
 _COOKIE_SECRET_KEY_ = '&]}7,}hKpY8w>Fm@'
 
