@@ -15,4 +15,6 @@ urlpatterns = [
     url(r'^login/$', views.login, name='login'),
     # ex: /blog/write/
     url(r'^write/$', views.write, name='write'),
+    # ex: /blog/logout/
+    url(r'^logout/$', views.logout, name='logout'),
 ]

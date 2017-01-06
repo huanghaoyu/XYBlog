@@ -8,7 +8,8 @@
 
 {% block nav-li-login %}
 {% if user %}
-	<li class="nav-item"><a href="#" class="nav-link">{{ user.name }}</a></li>
+	<li class="nav-item" id="user-item"><a href="#" class="nav-link">{{ user.name }}</a></li>
+	<li class="nav-item" id="logout-item" style="display: none;"><a href="{% url 'blog:logout' %}" class="nav-link">退出</a></li>
 {% else %}
 	<li class="nav-item"><a href="{% url 'blog:login' %}" class="nav-link">登录</a></li>
 {% endif %}
@@ -16,6 +17,21 @@
 
 {% block page_image %}
 <div class="xy-blog-img-container"></div>
+{% endblock %}
+
+{% block beforehead %}
+<script>
+$(document).on('ready', function() {
+	$('#user-item').on('mouseenter', function() {
+		$(this).hide();
+		$('#logout-item').show();
+	});
+	$('#logout-item').on('mouseleave', function() {
+		$(this).hide();
+		$('#user-item').show();
+	});
+});
+</script>
 {% endblock %}
 
 {% block main %}

@@ -4,7 +4,8 @@
 
 {% block nav-li-login %}
 {% if user %}
-	<li class="nav-item"><a href="#" class="nav-link">{{ user.name }}</a></li>
+	<li class="nav-item" id="user-item"><a href="#" class="nav-link">{{ user.name }}</a></li>
+	<li class="nav-item" id="logout-item" style="display: none;"><a href="{% url 'blog:logout' %}" class="nav-link">退出</a></li>
 {% else %}
 	<li class="nav-item"><a href="{% url 'blog:login' %}" class="nav-link">登录</a></li>
 {% endif %}
@@ -35,6 +36,14 @@ $(document).on('ready', function() {
 		}
 		reader.readAsDataURL(file);
 		$('form img#preview-image').show();
+	});
+	$('#user-item').on('mouseenter', function() {
+		$(this).hide();
+		$('#logout-item').show();
+	});
+	$('#logout-item').on('mouseleave', function() {
+		$(this).hide();
+		$('#user-item').show();
 	});
 });
 </script>
@@ -88,7 +97,7 @@ form img#preview-image {
 						<img src="" alt="Image" class="img-fluid xy-img-post" id="preview-image" />
 						<div class="form-group">
 							<label for="content">内容</label>
-							<textarea class="form-control" rows="20" id="content" name="content" required ></textarea>
+							<textarea class="form-control" rows="15" id="content" name="content" required ></textarea>
 						</div>
 						<button type="submit" class="xy-btn">提交</button>
 					</form>
@@ -98,6 +107,31 @@ form img#preview-image {
 	</div>
 </section>
 {% else %}
-<p>您还没登录，<a href="{% url 'blog:login' %}" class="xy-text-link">请先登录>>></a></p>
+<section class="xy-section">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9">
+				<p>您还没登录，<a href="{% url 'blog:login' %}" class="xy-text-link">请先登录>>></a></p>
+			</div>
+			<aside class="col-xs-12 col-sm-12 col-md-4 col-lg-3 col-xl-3 xy-aside-r">
+				<div class="xy-aside-container">
+					<h3 class="xy-gold-text xy-title">可能想看</h3>
+					<nav>
+						<ul class="nav">
+							<li><a href="#" class="xy-text-link">Lorem ipsum dolor sit</a></li>
+							<li><a href="#" class="xy-text-link">Tincidunt non faucibus placerat</a></li>
+							<li><a href="#" class="xy-text-link">Vestibulum tempor ac lectus</a></li>
+							<li><a href="#" class="xy-text-link">Elementum egestas dui</a></li>
+							<li><a href="#" class="xy-text-link">Nam in augue consectetur</a></li>
+							<li><a href="#" class="xy-text-link">Fusce non turpis euismod</a></li>
+							<li><a href="#" class="xy-text-link">Text Link Color #006699</a></li>
+						</ul>
+					</nav>
+					<hr class="xy-margin-t-small">
+				</div>
+			</aside>
+		</div>
+	</div>
+</section>
 {% endif %}
 {% endblock %}

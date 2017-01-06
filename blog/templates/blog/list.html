@@ -8,7 +8,8 @@
 
 {% block nav-li-login %}
 {% if user %}
-	<li class="nav-item"><a href="#" class="nav-link">{{ user.name }}</a></li>
+	<li class="nav-item" id="user-item"><a href="#" class="nav-link">{{ user.name }}</a></li>
+	<li class="nav-item" id="logout-item" style="display: none;"><a href="{% url 'blog:logout' %}" class="nav-link">退出</a></li>
 {% else %}
 	<li class="nav-item"><a href="{% url 'blog:login' %}" class="nav-link">登录</a></li>
 {% endif %}
@@ -18,6 +19,47 @@
 <div class="xy-blog-img-container"></div>
 {% endblock %}
 
+{% block beforehead %}
+<script>
+$(document).on('ready', function() {
+	$('#user-item').on('mouseenter', function() {
+		$(this).hide();
+		$('#logout-item').show();
+	});
+	$('#logout-item').on('mouseleave', function() {
+		$(this).hide();
+		$('#user-item').show();
+	});
+});
+</script>
+
+<style>
+.blog-title {
+	width: inherit;
+	height: 2rem;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+.blog-summary {
+	width: inherit;
+	height: 2rem;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+.blog-content {
+	width: inherit;
+    height: 4rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+</style>
+{% endblock %}
+
 {% block main %}
 <section class="xy-section">
 	<div class="container-fluid">
@@ -25,13 +67,13 @@
 		
 			<div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9">
 				{% for blog in blogs %}
-				<div class="xy-blog-post">
-					<h3><a href="{% url 'blog:detail' blog.id %}" class="xy-gold-text">{{ blog.title }}</a></h3>
-					<p>{{ blog.summary }}</p>
+				<div class="xy-blog-post" style="margin-bottom: 4rem;">
+					<h3><a href="{% url 'blog:detail' blog.id %}" class="xy-gold-text blog-title">{{ blog.title }}</a></h3>
+					<p class="blog-summary">{{ blog.summary }}</p>
 					{% if blog.image %}
 					<img src="{{ blog.image.url }}" alt="Image" class="img-fluid xy-img-post">
 					{% endif %}
-					<p>{{ blog.content }}</p>
+					<p class="blog-content">{{ blog.content }}</p>
 				</div>
 				{% empty %}
 				<p>还没有写过博客，<a href="{% url 'blog:write' %}" class="xy-text-link">快来写写吧>>></a></p>

@@ -110,3 +110,9 @@ def write(request):
         'user': user,
     }
     return render(request, 'blog/write.html', context)
+
+def logout(request):
+    response = redirect(reverse('blog:index'))
+    if LOGIN_COOKIE in request.COOKIES:
+        response.delete_cookie(LOGIN_COOKIE)
+    return response
